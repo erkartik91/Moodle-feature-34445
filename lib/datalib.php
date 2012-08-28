@@ -1677,7 +1677,10 @@ function add_to_log($courseid, $module, $action, $url='', $info='', $cm=0, $user
     if ($user) {
         $userid = $user;
     } else {
-        if (session_is_loggedinas()) {  // Don't log
+        if (session_is_loggedinas()) {  // log with real user info
+			$realuser = session_get_realuser();
+			$info = "loggedinas (ID " . $USER->id . ")";
+            add_to_log($courseid, $module, $action, $url, $info, $cm, $realuser->id);
             return;
         }
         $userid = empty($USER->id) ? '0' : $USER->id;
